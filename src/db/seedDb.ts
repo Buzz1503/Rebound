@@ -3,7 +3,7 @@ import { DEFAULT_GYM_DAYS, EXERCISES, MILESTONES, SESSIONS } from '../data/seed'
 import type { ReboundDB, SettingsRow } from './db'
 
 export function defaultSettings(): SettingsRow {
-  return { id: 'settings', gymDays: [...DEFAULT_GYM_DAYS], theme: 'dark', baseline: null, flare: null, workingWeights: {} }
+  return { id: 'settings', gymDays: [...DEFAULT_GYM_DAYS], theme: 'dark', baseline: null, flare: null, workingWeights: {}, snooze: {} }
 }
 
 /** First run: copy the master-plan seed into editable tables. No-op after that. */

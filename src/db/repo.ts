@@ -5,7 +5,7 @@ import { defaultSettings } from './seedDb'
 export const newId = (): string => crypto.randomUUID()
 
 export async function getSettings(db: ReboundDB): Promise<SettingsRow> {
-  return (await db.settings.get('settings')) ?? defaultSettings()
+  return { ...defaultSettings(), ...(await db.settings.get('settings')) }
 }
 
 export async function updateSettings(db: ReboundDB, patch: Partial<Omit<SettingsRow, 'id'>>): Promise<void> {

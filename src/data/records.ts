@@ -165,4 +165,6 @@ export interface Settings {
   flare: FlareState | null
   /** Starting weights you set on day 1, per slot key. */
   workingWeights: Record<string, number>
+  /** "Not yet" on a stage prompt hides it until the next day. */
+  snooze: Partial<Record<'knee' | 'wrist' | 'wristRegress' | 'flare', ISODate>>
 }

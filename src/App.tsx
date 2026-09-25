@@ -3,10 +3,12 @@ import { useEffect, useState } from 'react'
 import { db } from './db/db'
 import { getSettings } from './db/repo'
 import { seedIfEmpty } from './db/seedDb'
+import { NavContext, type Overlay, type Tab } from './app/nav'
+import { QuestionnaireForm } from './features/rehab/QuestionnaireForm'
+import { MorningCheck } from './features/today/MorningCheck'
+import { TodayScreen } from './features/today/TodayScreen'
 import { WorkoutScreen } from './features/workout/WorkoutScreen'
 import { ToastProvider } from './ui/Toast'
-
-export type Tab = 'today' | 'workout' | 'rehab' | 'progress' | 'more'
 
 const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'today', label: 'Today', icon: 'M4 12h16M12 4v16' },
@@ -27,7 +29,8 @@ function Placeholder({ title }: { title: string }) {
 
 export function App() {
   const [ready, setReady] = useState(false)
-  const [tab, setTab] = useState<Tab>('workout')
+  const [tab, setTab] = useState<Tab>('today')
+  const [overlay, setOverlay] = useState<Overlay>(null)
   const theme = useLiveQuery(async () => (await getSettings(db)).theme, [], 'dark')
 
   useEffect(() => {
@@ -42,19 +45,25 @@ export function App() {
 
   return (
     <ToastProvider>
+      <NavContext.Provider value={{ tab, go: (t) => { setOverlay(null); setTab(t) }, overlay, open: setOverlay }}>
       <div className="mx-auto flex h-dvh max-w-lg flex-col">
         <main className="min-h-0 flex-1 overflow-y-auto">
-          {tab === 'workout' && <WorkoutScreen />}
-          {tab === 'today' && <Placeholder title="Today" />}
-          {tab === 'rehab' && <Placeholder title="Rehab" />}
-          {tab === 'progress' && <Placeholder title="Progress" />}
-          {tab === 'more' && <Placeholder title="More" />}
+          {overlay?.kind === 'morning' && <MorningCheck onClose={() => setOverlay(null)} />}
+          {overlay?.kind === 'questionnaire' && <QuestionnaireForm type={overlay.type} onClose={() => setOverlay(null)} />}
+          {!overlay && tab === 'workout' && <WorkoutScreen />}
+          {!overlay && tab === 'today' && <TodayScreen />}
+          {!overlay && tab === 'rehab' && <Placeholder title="Rehab" />}
+          {!overlay && tab === 'progress' && <Placeholder title="Progress" />}
+          {!overlay && tab === 'more' && <Placeholder title="More" />}
         </main>
         <nav aria-label="Main" className="safe-bottom grid grid-cols-5 border-t border-line bg-surface">
           {TABS.map((t) => (
             <button
               key={t.id}
-              onClick={() => setTab(t.id)}
+              onClick={() => {
+                setOverlay(null)
+                setTab(t.id)
+              }}
               aria-current={tab === t.id ? 'page' : undefined}
               className={`flex min-h-14 flex-col items-center justify-center gap-0.5 text-[11px] font-medium ${tab === t.id ? 'text-accent' : 'text-muted'}`}
             >
@@ -66,6 +75,7 @@ export function App() {
           ))}
         </nav>
       </div>
+      </NavContext.Provider>
     </ToastProvider>
   )
 }

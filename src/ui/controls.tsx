@@ -126,3 +126,13 @@ export function GhostButton({ children, onClick, className = '', label }: { chil
     </button>
   )
 }
+
+/** Thin progress bar. value 0..1. */
+export function Bar({ value, className = 'bg-accent', label }: { value: number; className?: string; label: string }) {
+  const pct = Math.round(Math.min(1, Math.max(0, value)) * 100)
+  return (
+    <div role="progressbar" aria-label={label} aria-valuenow={pct} aria-valuemin={0} aria-valuemax={100} className="h-2 overflow-hidden rounded-full bg-surface-2">
+      <div className={`h-full rounded-full ${className}`} style={{ width: `${pct}%` }} />
+    </div>
+  )
+}
