@@ -1,7 +1,8 @@
 // Records the app stores as you use it (as opposed to seeded program data).
 // Dates are local calendar days as 'YYYY-MM-DD'; times are epoch ms.
 
-import type { Joint, KneeStageId, SessionId, WristStageId } from './types'
+import type { Suggestion } from '../engine/types'
+import type { Joint, KneeStageId, ProgressionKind, RepRange, SectionId, SessionId, WristStageId } from './types'
 
 export type ISODate = string
 
@@ -12,6 +13,8 @@ export type Side = 'left' | 'right'
 export interface SetLog {
   id: string
   workoutId: string
+  /** WorkoutExerciseState.key this set belongs to (stable through swaps). */
+  entryKey: string
   exerciseId: string
   /** Load-tracking key: exercise + rep range, so heavy and volume days progress apart. */
   slotKey: string
@@ -27,14 +30,42 @@ export interface SetLog {
 
 export type WorkoutStatus = 'active' | 'done' | 'abandoned'
 
-export interface WorkoutExerciseState {
+/** What the player shows for one exercise, frozen when the session starts. */
+export interface PlannedExercise {
   exerciseId: string
   slotKey: string
+  section: SectionId
+  /** Optional blocks (shoulder care) start collapsed and are not counted as skipped. */
+  optional: boolean
+  sets: number
+  /** Counted reps per set (or holds per set for holdReps). null for timed sets. */
+  reps: RepRange | null
+  /** Seconds per hold, for timed sets and holdReps. */
+  holdSec: RepRange | null
+  durationMin: RepRange | null
+  restSec: number | null
+  tempo: string | null
+  note: string | null
+  perSide: boolean
+  skipIf: { joint: Joint; above: number } | null
+  progression: ProgressionKind
+  weightKg: number | null
+  suggestion: Suggestion | null
+}
+
+export interface WorkoutExerciseState {
+  /** Unique within the workout. */
+  key: string
+  exerciseId: string
+  slotKey: string
+  plan: PlannedExercise
   skipped: boolean
   /** Replacement exercise for the rest of the session, if swapped. */
   swappedTo: string | null
-  /** Swap modification label in force (e.g. "Use straps"). */
+  /** Swap modification in force (e.g. "Use straps"). */
   modification: string | null
+  /** Load change in force from a swap, e.g. -30. */
+  loadPct: number
   note: string
 }
 

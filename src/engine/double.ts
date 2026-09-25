@@ -84,9 +84,10 @@ export function nextDouble(input: DoubleInput): Suggestion {
       return {
         ...weighted(null, range, 'start', `${input.startWeightNote ?? 'Set on day 1'}: pick a weight that leaves 2 to 3 reps in reserve.`),
         status: 'needsWeight',
+        light: 'amber',
       }
     }
-    return weighted(input.startWeightKg, range, 'start', `Starting weight: ${formatKg(input.startWeightKg)}.`)
+    return weighted(input.startWeightKg, range, 'start', 'Starting weight from your plan.')
   }
 
   const over = jointsOverLimit(last.sets)

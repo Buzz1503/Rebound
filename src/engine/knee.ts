@@ -105,7 +105,7 @@ export function nextKneeLift(input: KneeLiftInput): Suggestion {
   }
 
   if (!last || last.weightKg === null) {
-    return make(input.startWeightKg, 'start', `Starting weight from your plan: ${formatKg(input.startWeightKg)}.`)
+    return make(input.startWeightKg, 'start', 'Starting weight from your plan.')
   }
 
   const prev = last.weightKg

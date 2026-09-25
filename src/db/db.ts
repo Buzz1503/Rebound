@@ -1,4 +1,4 @@
-import Dexie, { type EntityTable } from 'dexie'
+import Dexie, { type EntityTable, type Table } from 'dexie'
 import type {
   DeclineSquatTest,
   MachineSettings,
@@ -27,7 +27,7 @@ export class ReboundDB extends Dexie {
   sets!: EntityTable<SetLog, 'id'>
   morningChecks!: EntityTable<MorningCheck, 'date'>
   questionnaires!: EntityTable<QuestionnaireResult, 'id'>
-  stages!: EntityTable<StageState, 'id'>
+  stages!: Table<StageState, StageState['id']>
   machineSettings!: EntityTable<MachineSettings, 'exerciseId'>
   milestones!: EntityTable<MilestoneState, 'id'>
   declineSquatTests!: EntityTable<DeclineSquatTest, 'date'>

@@ -28,7 +28,7 @@ const workout = (id: string, status: 'active' | 'done', startedAt: number) => ({
   source: 'app' as const,
 })
 
-const baseSet = { workoutId: 'w1', exerciseId: 'leg-press', slotKey: 'leg-press:knee', side: null, weightKg: 60, reps: 15, holdSec: null, rir: 2, pain: { knee: 1 } }
+const baseSet = { workoutId: 'w1', entryKey: 'e1', exerciseId: 'leg-press', slotKey: 'leg-press:knee', side: null, weightKg: 60, reps: 15, holdSec: null, rir: 2, pain: { knee: 1 } }
 
 describe('database', () => {
   it('seeds once from the master plan', async () => {
