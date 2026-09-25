@@ -12,7 +12,8 @@
     "skipLibCheck": true,
     "types": [
       "vitest/globals",
-      "vite/client"
+      "vite/client",
+      "vite-plugin-pwa/client"
     ],
     "jsx": "react-jsx",
     "lib": [

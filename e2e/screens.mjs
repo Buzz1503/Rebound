@@ -1,7 +1,7 @@
 // Screenshot Today, morning check, Rehab and Progress at 390px.
 import { chromium } from 'playwright'
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:4173/rebound/'
+const BASE = process.env.BASE_URL ?? 'http://localhost:4173/Rebound/'
 const THEME = process.env.THEME ?? 'dark'
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium' })
 const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, colorScheme: THEME })).newPage()

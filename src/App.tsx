@@ -1,12 +1,9 @@
 import { useLiveQuery } from 'dexie-react-hooks'
-import { useEffect, useState } from 'react'
+import { lazy, Suspense, useEffect, useState } from 'react'
 import { db } from './db/db'
 import { getSettings } from './db/repo'
 import { seedIfEmpty } from './db/seedDb'
 import { NavContext, type Overlay, type Tab } from './app/nav'
-import { MoreScreen } from './features/more/MoreScreen'
-import { ProgressScreen } from './features/progress/ProgressScreen'
-import { RehabScreen } from './features/rehab/RehabScreen'
 import { QuestionnaireForm } from './features/rehab/QuestionnaireForm'
 import { MorningCheck } from './features/today/MorningCheck'
 import { TodayScreen } from './features/today/TodayScreen'
@@ -20,6 +17,10 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'progress', label: 'Progress', icon: 'M4 20V10m6 10V4m6 16v-7m4 7H2' },
   { id: 'more', label: 'More', icon: 'M5 12h.01M12 12h.01M19 12h.01' },
 ]
+
+const RehabScreen = lazy(() => import('./features/rehab/RehabScreen').then((m) => ({ default: m.RehabScreen })))
+const ProgressScreen = lazy(() => import('./features/progress/ProgressScreen').then((m) => ({ default: m.ProgressScreen })))
+const MoreScreen = lazy(() => import('./features/more/MoreScreen').then((m) => ({ default: m.MoreScreen })))
 
 export function App() {
   const [ready, setReady] = useState(false)
@@ -43,6 +44,7 @@ export function App() {
       <NavContext.Provider value={{ tab, go: (t) => { setOverlay(null); setTab(t) }, overlay, open: setOverlay }}>
       <div className="mx-auto flex h-dvh max-w-lg flex-col">
         <main className="min-h-0 flex-1 overflow-y-auto">
+          <Suspense fallback={null}>
           {overlay?.kind === 'morning' && <MorningCheck onClose={() => setOverlay(null)} />}
           {overlay?.kind === 'questionnaire' && <QuestionnaireForm type={overlay.type} onClose={() => setOverlay(null)} />}
           {!overlay && tab === 'workout' && <WorkoutScreen />}
@@ -50,6 +52,7 @@ export function App() {
           {!overlay && tab === 'rehab' && <RehabScreen />}
           {!overlay && tab === 'progress' && <ProgressScreen />}
           {!overlay && tab === 'more' && <MoreScreen />}
+          </Suspense>
         </main>
         <nav aria-label="Main" className="safe-bottom grid grid-cols-5 border-t border-line bg-surface">
           {TABS.map((t) => (

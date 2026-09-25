@@ -1,7 +1,7 @@
 // Pain above limit: card turns amber, plan swaps appear, one tap applies for the rest of the session.
 import { chromium } from 'playwright'
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:4173/rebound/'
+const BASE = process.env.BASE_URL ?? 'http://localhost:4173/Rebound/'
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium' })
 const page = await (await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2 })).newPage()
 const errors = []

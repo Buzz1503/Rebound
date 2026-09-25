@@ -2,7 +2,7 @@
 // BASE_URL defaults to the local preview (npm run build && npx vite preview).
 import { chromium } from 'playwright'
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:4173/rebound/'
+const BASE = process.env.BASE_URL ?? 'http://localhost:4173/Rebound/'
 const SHOTS = process.env.SHOTS ?? 'e2e/shots'
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium' })
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, hasTouch: true })
@@ -36,8 +36,17 @@ async function closeRest(joint) {
 
 await page.goto(BASE)
 await tick(500)
-await click('Workout')
-await click('A', { exact: true })
+await shot('00-today')
+// Morning check first, the way it's meant to be used.
+await click(/Morning check first/)
+const tap = (group, v) => page.getByRole('radiogroup', { name: group }).getByRole('radio', { name: String(v), exact: true }).click()
+await tap('Left knee', 1)
+await tap('Right knee', 1)
+await tap('Wrist pain', 1)
+await page.getByRole('radio', { name: 'No' }).click()
+await click(/See today/)
+await shot('00-morning-result')
+await click('Done')
 await click(/^Start Session A/)
 await shot('01-bike')
 
@@ -84,6 +93,8 @@ for (let guard = 0; guard < 120; guard++) {
       await page.reload()
       await tick(800)
       await click('Workout')
+      await tick(800)
+      await shot('resume-debug')
       const resumed = await title()
       if (resumed !== 'Leg press') throw new Error(`Resume landed on ${resumed}`)
       console.log('resume ok:', resumed, await page.locator('header').innerText())

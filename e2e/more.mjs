@@ -2,7 +2,7 @@
 import { chromium } from 'playwright'
 import { writeFileSync } from 'node:fs'
 
-const BASE = process.env.BASE_URL ?? 'http://localhost:4173/rebound/'
+const BASE = process.env.BASE_URL ?? 'http://localhost:4173/Rebound/'
 const browser = await chromium.launch({ executablePath: process.env.CHROME ?? '/opt/pw-browsers/chromium' })
 const ctx = await browser.newContext({ viewport: { width: 390, height: 844 }, deviceScaleFactor: 2, acceptDownloads: true })
 const page = await ctx.newPage()

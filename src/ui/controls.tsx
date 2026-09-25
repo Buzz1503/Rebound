@@ -30,7 +30,7 @@ export function Stepper({ label, value, step, min = 0, unit, onChange }: Stepper
         <button aria-label={`Less ${label}`} onClick={() => set(value === null ? 0 : v - step)} className="h-14 w-14 shrink-0 rounded-xl text-3xl text-muted active:bg-line">
           −
         </button>
-        <div className="flex flex-1 items-baseline justify-center">
+        <div className="flex min-w-0 flex-1 items-baseline justify-center">
           <input
             aria-label={label}
             inputMode="decimal"
@@ -44,9 +44,10 @@ export function Stepper({ label, value, step, min = 0, unit, onChange }: Stepper
             onChange={(e) => setText(e.target.value)}
             onBlur={commit}
             onKeyDown={(e) => e.key === 'Enter' && e.currentTarget.blur()}
-            className="num w-full min-w-0 bg-transparent text-center text-3xl font-semibold outline-none placeholder:text-muted"
+            style={{ width: `${Math.max(2, (text ?? (value === null ? '' : String(value))).length + 0.6)}ch` }}
+            className="num min-w-0 bg-transparent text-center text-3xl font-semibold outline-none placeholder:text-muted"
           />
-          {unit && value !== null && text === null && <span className="-ml-6 w-6 text-base text-muted">{unit}</span>}
+          {unit && value !== null && text === null && <span className="text-base text-muted">{unit}</span>}
         </div>
         <button aria-label={`More ${label}`} onClick={() => set(v + step)} className="h-14 w-14 shrink-0 rounded-xl text-3xl text-muted active:bg-line">
           +

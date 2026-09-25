@@ -267,6 +267,7 @@ export function Player({ workout, title, onFinish, onDiscard }: Props) {
                 {fmtRest(state.plan.restSec) && <span className="text-sm text-muted">{fmtRest(state.plan.restSec)}</span>}
               </div>
               {state.plan.note && <p className="mt-1 text-sm text-muted">{state.plan.note}</p>}
+              {currentEx && currentEx.steps.length > 0 && <p className="mt-2 text-[15px] leading-snug">{currentEx.steps.join(' ')}</p>}
               {currentEx?.plateLoaded && draft.weightKg !== null && draft.weightKg > 0 && (
                 <p className="num mt-1 text-sm text-muted">Plates per side: {platesPerSide(draft.weightKg).perSide.join(' + ') || 'none'}</p>
               )}
