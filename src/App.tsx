@@ -4,6 +4,8 @@ import { db } from './db/db'
 import { getSettings } from './db/repo'
 import { seedIfEmpty } from './db/seedDb'
 import { NavContext, type Overlay, type Tab } from './app/nav'
+import { ProgressScreen } from './features/progress/ProgressScreen'
+import { RehabScreen } from './features/rehab/RehabScreen'
 import { QuestionnaireForm } from './features/rehab/QuestionnaireForm'
 import { MorningCheck } from './features/today/MorningCheck'
 import { TodayScreen } from './features/today/TodayScreen'
@@ -52,8 +54,8 @@ export function App() {
           {overlay?.kind === 'questionnaire' && <QuestionnaireForm type={overlay.type} onClose={() => setOverlay(null)} />}
           {!overlay && tab === 'workout' && <WorkoutScreen />}
           {!overlay && tab === 'today' && <TodayScreen />}
-          {!overlay && tab === 'rehab' && <Placeholder title="Rehab" />}
-          {!overlay && tab === 'progress' && <Placeholder title="Progress" />}
+          {!overlay && tab === 'rehab' && <RehabScreen />}
+          {!overlay && tab === 'progress' && <ProgressScreen />}
           {!overlay && tab === 'more' && <Placeholder title="More" />}
         </main>
         <nav aria-label="Main" className="safe-bottom grid grid-cols-5 border-t border-line bg-surface">
