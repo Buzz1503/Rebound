@@ -2,7 +2,9 @@ name: Deploy to GitHub Pages
 
 on:
   push:
-    branches: [main]
+    # The repo's default branch is the only one GitHub lets publish to Pages;
+    # deploy from main and from that branch (they carry the same code).
+    branches: [main, claude/rebound-rehab-app-v04ntw]
   workflow_dispatch:
 
 permissions:
