@@ -4,6 +4,7 @@ import { db } from './db/db'
 import { getSettings } from './db/repo'
 import { seedIfEmpty } from './db/seedDb'
 import { NavContext, type Overlay, type Tab } from './app/nav'
+import { MoreScreen } from './features/more/MoreScreen'
 import { ProgressScreen } from './features/progress/ProgressScreen'
 import { RehabScreen } from './features/rehab/RehabScreen'
 import { QuestionnaireForm } from './features/rehab/QuestionnaireForm'
@@ -20,15 +21,6 @@ const TABS: { id: Tab; label: string; icon: string }[] = [
   { id: 'more', label: 'More', icon: 'M5 12h.01M12 12h.01M19 12h.01' },
 ]
 
-function Placeholder({ title }: { title: string }) {
-  return (
-    <div className="p-4">
-      <h1 className="pt-2 text-2xl font-semibold">{title}</h1>
-      <p className="mt-2 text-muted">Coming in a later build step.</p>
-    </div>
-  )
-}
-
 export function App() {
   const [ready, setReady] = useState(false)
   const [tab, setTab] = useState<Tab>('today')
@@ -41,6 +33,7 @@ export function App() {
 
   useEffect(() => {
     document.documentElement.dataset.theme = theme
+    document.querySelector('meta[name="theme-color"]')?.setAttribute('content', theme === 'light' ? '#f4f5f7' : '#0a0c0f')
   }, [theme])
 
   if (!ready) return null
@@ -56,7 +49,7 @@ export function App() {
           {!overlay && tab === 'today' && <TodayScreen />}
           {!overlay && tab === 'rehab' && <RehabScreen />}
           {!overlay && tab === 'progress' && <ProgressScreen />}
-          {!overlay && tab === 'more' && <Placeholder title="More" />}
+          {!overlay && tab === 'more' && <MoreScreen />}
         </main>
         <nav aria-label="Main" className="safe-bottom grid grid-cols-5 border-t border-line bg-surface">
           {TABS.map((t) => (
